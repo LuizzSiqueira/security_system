@@ -1,0 +1,23 @@
+# Framework principal
+Django
+
+# Variáveis de ambiente seguras
+python-decouple
+
+# API REST e JWT
+djangorestframework
+djangorestframework-simplejwt
+
+# Autenticação em duas etapas (2FA)
+django-otp
+
+# Envio de e-mails
+django-anymail # ou substitua [mailgun] por [sendgrid], [postmark], etc.
+requests
+
+# Validação de e-mail
+validate-email-address
+
+# Desenvolvimento (opcional)
+django-debug-toolbar
+ipython

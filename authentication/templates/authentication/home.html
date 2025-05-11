@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Bem-vindo{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="display-5 mb-4">Bem-vindo ao Security System</h1>
+    {% if user.is_authenticated %}
+        <p class="lead">Olá, {{ user.username }}!</p>
+        <a href="{% url 'logout' %}" class="btn btn-outline-warning mt-3">Sair</a>
+    {% else %}
+        <p class="lead">Faça login para acessar sua conta.</p>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary mt-3">Entrar</a>
+    {% endif %}
+</div>
+{% endblock %}
