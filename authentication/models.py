@@ -2,9 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+from datetime import timedelta
 
 
-# Gerenciador customizado para User
+# Gerenciador customizado para o modelo User
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
         if not email:
@@ -14,7 +15,7 @@ class UserManager(BaseUserManager):
 
         email = self.normalize_email(email)
         user = self.model(username=username, email=email)
-        user.set_password(password)  # Armazena senha com hash
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
@@ -26,7 +27,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-# Modelo User customizado
+# Modelo de Usuário customizado
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=150, unique=True)
@@ -43,15 +44,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    # Define as relações com os grupos e permissões
     groups = models.ManyToManyField(
         'auth.Group',
-        related_name='custom_user_set',  # Adicione um related_name para evitar o conflito
+        related_name='custom_user_set',
         blank=True,
     )
     user_permissions = models.ManyToManyField(
         'auth.Permission',
-        related_name='custom_user_permissions',  # Adicione um related_name para evitar o conflito
+        related_name='custom_user_permissions',
         blank=True,
     )
 
@@ -73,19 +73,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.save()
 
     def lock_account(self, minutes=30):
-        self.locked_until = timezone.now() + timezone.timedelta(minutes=minutes)
+        self.locked_until = timezone.now() + timedelta(minutes=minutes)
         self.save()
 
     def is_locked(self):
-        if self.locked_until and timezone.now() < self.locked_until:
-            return True
-        return False
+        return self.locked_until and timezone.now() < self.locked_until
 
 
-# Modelo Log para registrar atividades do usuário
+# Modelo de Log para rastrear atividades dos usuários
 class Log(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(max_length=255)
     data_hora = models.DateTimeField(auto_now_add=True)
     ip_origem = models.GenericIPAddressField(null=True, blank=True)
@@ -97,18 +95,18 @@ class Log(models.Model):
         verbose_name_plural = 'Logs'
 
     def __str__(self):
-        return f"{self.user.username} - {self.status} - {self.data_hora}"
+        return f"{self.user.username if self.user else 'Usuário não definido'} - {self.status} - {self.data_hora}"
 
 
-# Modelo de Permissões dos usuários (personalizado)
-class Permission(models.Model):
+# Modelo personalizado de Permissões por usuário
+class CustomPermission(models.Model):  # Renomeado para evitar conflito com modelo nativo
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     permission_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'permissions'
+        db_table = 'custom_permissions'
         managed = True
         verbose_name = 'Permissão'
         verbose_name_plural = 'Permissões'

@@ -21,3 +21,4 @@ validate-email-address
 # Desenvolvimento (opcional)
 django-debug-toolbar
 ipython
+psycopg2-binary

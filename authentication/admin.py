@@ -1,46 +1,39 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import User, Log, Permission
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from .models import User, Log, CustomPermission
 
 
-# Classe Customizada para User no Admin
-class CustomUserAdmin(UserAdmin):
-    model = User
-    list_display = ('username', 'email', 'is_active', 'is_staff', 'created_at', 'login_attempts')  # Exibindo mais informações
-    list_filter = ('is_active', 'is_staff', 'is_superuser')
+class UserAdmin(BaseUserAdmin):
+    list_display = ('id', 'username', 'email', 'is_active', 'is_staff', 'created_at')
+    list_filter = ('is_active', 'is_staff', 'groups')
     search_fields = ('username', 'email')
-
+    ordering = ('id',)
+    filter_horizontal = ('groups', 'user_permissions')
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
-        ('Informações Pessoais', {'fields': ('first_name', 'last_name')}),
-        ('Permissões', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
-        ('Segurança', {'fields': ('login_attempts', 'locked_until')}),
-        ('Outros', {'fields': ('groups', 'user_permissions')}),
+        ('Informações de acesso', {'fields': ('login_attempts', 'locked_until')}),
+        ('Permissões', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Datas importantes', {'fields': ('last_login', 'created_at')}),
     )
-
     add_fieldsets = (
-        (None, {'fields': ('username', 'email', 'password1', 'password2')}),
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2'),
+        }),
     )
 
-    ordering = ('username',)
-    filter_horizontal = ('groups', 'user_permissions')
 
-
-# Classe Customizada para Log no Admin
+@admin.register(Log)
 class LogAdmin(admin.ModelAdmin):
-    list_display = ('user', 'status', 'data_hora', 'ip_origem')
-    list_filter = ('status', 'data_hora')
+    list_display = ('id', 'user', 'status', 'data_hora', 'ip_origem')
     search_fields = ('user__username', 'status')
+    list_filter = ('data_hora',)
 
 
-# Classe Customizada para Permissão no Admin
-class PermissionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'permission_name', 'created_at')
-    list_filter = ('created_at',)
+@admin.register(CustomPermission)
+class CustomPermissionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'permission_name', 'created_at')
     search_fields = ('user__username', 'permission_name')
 
 
-# Registro dos modelos no Admin
-admin.site.register(User, CustomUserAdmin)
-admin.site.register(Log, LogAdmin)
-admin.site.register(Permission, PermissionAdmin)
+admin.site.register(User, UserAdmin)
