@@ -1,6 +1,7 @@
 from logging import config
 from pathlib import Path
 from decouple import config, Csv
+from dotenv import load_dotenv
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,6 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 # Middleware
@@ -85,6 +88,21 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Usar variáveis de ambiente para as credenciais de e-mail
+FROM_EMAIL = os.getenv("FROM_EMAIL", "central.seguranca.app@gmail.com")
+FROM_PASSWORD = os.getenv("FROM_PASSWORD", "iuhl pemq gurn mqls")
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+
+# Configurações do back-end de envio de e-mail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = SMTP_SERVER
+EMAIL_PORT = SMTP_PORT
+EMAIL_USE_TLS = True  # Usar TLS para segurança
+EMAIL_HOST_USER = FROM_EMAIL
+EMAIL_HOST_PASSWORD = FROM_PASSWORD
+DEFAULT_FROM_EMAIL = FROM_EMAIL
 
 # settings.py
 

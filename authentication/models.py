@@ -65,26 +65,52 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
     def reset_login_attempts(self):
+        """Reseta o contador de tentativas de login."""
         self.login_attempts = 0
         self.save()
 
     def increment_login_attempts(self):
+        """Incrementa o contador de tentativas de login."""
         self.login_attempts += 1
         self.save()
 
     def lock_account(self, minutes=30):
+        """Bloqueia a conta por um número específico de minutos."""
         self.locked_until = timezone.now() + timedelta(minutes=minutes)
         self.save()
 
     def is_locked(self):
+        """Verifica se a conta está bloqueada."""
         return self.locked_until and timezone.now() < self.locked_until
 
 
 # Modelo de Log para rastrear atividades dos usuários
 class Log(models.Model):
+    ACTION_TYPES = [
+    ('LOGIN', 'Login'),
+    ('LOGOUT', 'Logout'),
+    ('PASSWORD_RESET', 'Redefinição de senha'),
+    ('PASSWORD_CHANGE', 'Alteração de senha'),
+    ('PERMISSION_CHANGE', 'Mudança de permissão'),
+    ('ACCOUNT_LOCKED', 'Conta bloqueada'),
+    ('REGISTER', 'Cadastro'),
+    ('CREATE', 'Criação'),
+    ('READ', 'Consulta'),
+    ('UPDATE', 'Atualização'),
+    ('DELETE', 'Exclusão'),
+    ('OTHER', 'Outro'),
+]
+
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(max_length=255)
+    action_type = models.CharField(
+        max_length=50,
+        choices=ACTION_TYPES,
+        default='LOGIN'  # Valor padrão para o campo action_type, caso não seja especificado
+    )
+    success = models.BooleanField(default=False)
     data_hora = models.DateTimeField(auto_now_add=True)
     ip_origem = models.GenericIPAddressField(null=True, blank=True)
 
@@ -95,8 +121,13 @@ class Log(models.Model):
         verbose_name_plural = 'Logs'
 
     def __str__(self):
-        return f"{self.user.username if self.user else 'Usuário não definido'} - {self.status} - {self.data_hora}"
+        return f"{self.user.username if self.user else 'Usuário não definido'} - {self.action_type} - {self.status} - {self.data_hora}"
 
+    # Anotação explicativa:
+    # Adicionamos o valor padrão 'LOGIN' no campo 'action_type'. Isso garante que, quando um novo log for criado
+    # e o campo 'action_type' não for especificado, o Django automaticamente irá atribuir o valor 'LOGIN' a ele.
+    # Isso pode ser útil para manter a consistência no registro de atividades, especialmente para logs que não
+    # exigem um tipo de ação específico, como no caso de eventos genéricos de login.
 
 # Modelo personalizado de Permissões por usuário
 class CustomPermission(models.Model):  # Renomeado para evitar conflito com modelo nativo
