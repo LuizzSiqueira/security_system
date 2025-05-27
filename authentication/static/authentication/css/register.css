@@ -176,6 +176,27 @@ button[type="submit"]:focus {
   outline: none;
   cursor: pointer;
 }
+
+.troca-senha-link {
+  text-align: right;
+  margin-bottom: 15px;
+}
+
+.troca-senha-link a {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.troca-senha-link a:hover,
+.troca-senha-link a:focus {
+  color: #FFD580;
+  text-decoration: underline;
+  outline: none;
+  cursor: pointer;
+}
+
 .input-field {
   width: 90%;
   height: 50px;

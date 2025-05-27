@@ -31,6 +31,9 @@
         <i class="fas fa-lock"></i>
         {{ form.password|add_class:"input-field"|attr:"placeholder:Senha" }}
       </div>
+      <div class="troca-senha-link" >
+        <a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
+      </div>
 
       <button type="submit">Entrar</button>
     </form>
@@ -38,6 +41,7 @@
     <div class="login-link">
       Ainda não tem uma conta? <a href="{% url 'register' %}">Cadastre-se!</a>
     </div>
+
   </div>
 </body>
 </html>
