@@ -20,6 +20,8 @@ from rest_framework.permissions import IsAuthenticated
 from .forms import CustomUserCreationForm
 from .models import Log
 
+from django.shortcuts import render
+
 
 # Função para obter o IP do cliente da requisição
 def get_client_ip(request):
@@ -152,3 +154,6 @@ class CustomPasswordChangeView(PasswordChangeView):
         user = self.request.user
         register_log(user, 'Falha ao tentar alterar a senha', self.request, action_type='UPDATE', success=False)
         return super().form_invalid(form)
+
+def terms_view(request):
+    return render(request, 'authentication/terms.html')

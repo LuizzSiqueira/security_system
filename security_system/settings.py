@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'widget_tweaks',  # Para manipulação de widgets no Django
 ]
 
 # Middleware

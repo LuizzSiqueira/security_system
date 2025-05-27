@@ -1,0 +1,70 @@
+.home-container {
+  background-color: rgba(30, 30, 60, 0.85);
+  padding: 40px 30px;
+  border-radius: 20px;
+  max-width: 600px;
+  margin: 60px auto;
+  color: white;
+  font-family: 'PT Sans', sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.home-container h1 {
+  font-weight: 700;
+  font-size: 2.4rem;
+  margin-bottom: 15px;
+  color: #FFA500;
+}
+
+.home-container span {
+  color: #FFD580;
+}
+
+.home-container .intro {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  font-weight: 500;
+  color: #ddd;
+}
+
+.home-container .greeting {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.btn-logout {
+  display: inline-block;
+  padding: 12px 28px;
+  border: 2px solid #FFA500;
+  background: transparent;
+  color: #FFA500;
+  border-radius: 15px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #FFA500;
+  color: #1F41A9;
+  box-shadow: 0 0 10px #FFA500cc;
+}
+
+.home-container .terms-link {
+  margin-top: 30px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.home-container .terms-link a {
+  color: #FFD580;
+  text-decoration: underline;
+}
+
+.home-container .terms-link a:hover {
+  color: #fff;
+}

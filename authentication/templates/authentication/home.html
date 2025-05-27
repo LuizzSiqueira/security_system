@@ -3,14 +3,25 @@
 {% block title %}Bem-vindo{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1 class="display-5 mb-4">Bem-vindo ao Security System</h1>
+  <div class="background-shape one"></div>
+  <div class="background-shape two"></div>
+
+  <div class="home-container">
+    <h1>🔐 Bem-vindo ao <span>Security System</span></h1>
+
+    <p class="intro">
+      Um sistema desenvolvido para proteger seus dados com autenticação segura e práticas modernas de segurança.
+    </p>
+
     {% if user.is_authenticated %}
-        <p class="lead">Olá, {{ user.username }}!</p>
-        <a href="{% url 'logout' %}" class="btn btn-outline-warning mt-3">Sair</a>
+      <p class="greeting">Olá, <strong>{{ user.username }}</strong>! Que bom ter você de volta.</p>
+      <a href="{% url 'logout' %}" class="btn-logout">Sair</a>
     {% else %}
-        <p class="lead">Faça login para acessar sua conta.</p>
-        <a href="{% url 'login' %}" class="btn btn-outline-primary mt-3">Entrar</a>
+      <p class="greeting">Você não está autenticado. Por favor, <a href="{% url 'login' %}">faça login</a>.</p>
     {% endif %}
-</div>
+
+    <p class="terms-link">
+      Leia nossos <a href="{% url 'terms' %}">Termos de Uso e Privacidade</a>.
+    </p>
+  </div>
 {% endblock %}

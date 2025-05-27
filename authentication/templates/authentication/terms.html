@@ -1,0 +1,52 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block title %}Termo de Uso e Privacidade{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'authentication/css/terms.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="background-shape one"></div>
+  <div class="background-shape two"></div>
+
+  <div class="terms-container">
+    <h1>Termo de Uso e Privacidade</h1>
+
+    <p>
+      A sua privacidade é muito importante para nós. Este termo explica como coletamos, usamos, armazenamos e protegemos suas informações pessoais, em conformidade com a Lei Geral de Proteção de Dados (LGPD) – Lei nº 13.709/2018.
+    </p>
+
+    <h2>1. Coleta de Dados</h2>
+    <p>
+      Coletamos apenas os dados necessários para que você possa utilizar nossos serviços, tais como nome, e-mail e informações de autenticação. Esses dados são fornecidos voluntariamente por você no momento do cadastro.
+    </p>
+
+    <h2>2. Uso dos Dados</h2>
+    <p>
+      As informações coletadas são utilizadas exclusivamente para autenticação, segurança do sistema e melhoria dos nossos serviços. Não compartilhamos seus dados com terceiros sem sua autorização, exceto quando exigido por lei.
+    </p>
+
+    <h2>3. Armazenamento e Segurança</h2>
+    <p>
+      Seus dados são armazenados em servidores seguros e protegidos contra acessos não autorizados, utilizando tecnologias modernas de criptografia e segurança.
+    </p>
+
+    <h2>4. Direitos do Titular dos Dados</h2>
+    <p>
+      Você tem o direito de acessar, corrigir, atualizar ou solicitar a exclusão dos seus dados pessoais a qualquer momento. Também pode revogar seu consentimento para o uso dos seus dados.
+    </p>
+
+    <h2>5. Contato</h2>
+    <p>
+      Para exercer seus direitos ou tirar dúvidas sobre esta política, entre em contato conosco pelo e-mail: <a href="mailto:central.seguranca.app@gmail.com
+">central.seguranca.app@gmail.com
+</a>.
+    </p>
+
+    <p>
+      Ao utilizar nosso sistema, você concorda com este Termo de Uso e Privacidade.
+    </p>
+  </div>
+{% endblock %}
