@@ -3,6 +3,7 @@ Django
 
 # Variáveis de ambiente seguras
 python-decouple
+python-dotenv  # Utilitário adicional comum para .env (pode remover se não usar)
 
 # API REST e JWT
 djangorestframework
@@ -12,7 +13,7 @@ djangorestframework-simplejwt
 django-otp
 
 # Envio de e-mails
-django-anymail # ou substitua [mailgun] por [sendgrid], [postmark], etc.
+django-anymail  # ou substitua [mailgun] por [sendgrid], [postmark], etc.
 requests
 
 # Validação de e-mail
@@ -21,5 +22,30 @@ validate-email-address
 # Desenvolvimento (opcional)
 django-debug-toolbar
 ipython
-psycopg2-binary
+psycopg2-binary  # substituto de psycopg2 puro, recomendado para dev/testes
 PyJWT
+
+# Outros pacotes auxiliares (automáticos via dependências ou utilizados no dev)
+asgiref
+certifi
+charset-normalizer
+decorator
+executing
+idna
+ipython_pygments_lexers
+jedi
+matplotlib-inline
+parso
+pexpect
+prompt_toolkit
+ptyprocess
+pure_eval
+Pygments
+sqlparse
+stack-data
+traitlets
+urllib3
+wcwidth
+
+# Templates com personalização
+django-widget-tweaks
