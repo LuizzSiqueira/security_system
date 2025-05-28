@@ -16,6 +16,7 @@
     {% if user.is_authenticated %}
       <p class="greeting">Olá, <strong>{{ user.username }}</strong>! Que bom ter você de volta.</p>
       <a href="{% url 'logout' %}" class="btn-logout">Sair</a>
+      <a href="{% url 'profile' %}">Perfil</a>
     {% else %}
       <p class="greeting">Você não está autenticado. Por favor, <a href="{% url 'login' %}">faça login</a>.</p>
     {% endif %}

@@ -1,27 +1,29 @@
-# Django - views, redirecionamento, mensagens
-from django.shortcuts import render, redirect
+# Django - atalhos, mensagens, utilitários
+from django import forms
 from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 
 # Django - autenticação
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordChangeView
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import (
+    PasswordChangeView,
+    PasswordResetConfirmView,
+    PasswordResetView
+)
 
 # Django REST framework
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # App local - formulários e modelos
 from .forms import CustomUserCreationForm
 from .models import Log
-
-from django.shortcuts import render
-
 
 # Função para obter o IP do cliente da requisição
 def get_client_ip(request):
@@ -157,3 +159,30 @@ class CustomPasswordChangeView(PasswordChangeView):
 
 def terms_view(request):
     return render(request, 'authentication/terms.html')
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+@login_required
+def profile_view(request):
+    user = request.user  # 👈 garante que estamos lidando com o usuário autenticado
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Perfil atualizado com sucesso!')
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=user)
+
+    return render(request, 'authentication/profile.html', {
+        'form': form,
+        'user': user  # 👈 envia o usuário pro template, se quiser mostrar outras infos
+    })
