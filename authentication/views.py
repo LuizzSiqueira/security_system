@@ -159,6 +159,8 @@ class CustomPasswordChangeView(PasswordChangeView):
 
 def terms_view(request):
     return render(request, 'authentication/terms.html')
+
+
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
@@ -171,18 +173,25 @@ class ProfileForm(forms.ModelForm):
 
 @login_required
 def profile_view(request):
-    user = request.user  # 👈 garante que estamos lidando com o usuário autenticado
+    user = request.user
+    print('Usuário atual:', user.username)
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=user)
+        print('POST recebido:', request.POST)
         if form.is_valid():
+            print('Form válido, salvando...')
             form.save()
             messages.success(request, 'Perfil atualizado com sucesso!')
             return redirect('profile')
+        else:
+            print('Erros do form:', form.errors)
+            messages.error(request, 'Erro ao atualizar perfil.')
     else:
         form = ProfileForm(instance=user)
+        print('GET - formulário carregado com:', form.initial)
 
     return render(request, 'authentication/profile.html', {
         'form': form,
-        'user': user  # 👈 envia o usuário pro template, se quiser mostrar outras infos
+        'user': user,
     })
