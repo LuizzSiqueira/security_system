@@ -21,6 +21,18 @@
       {{ form.non_field_errors }}
 
       <div class="input-group">
+        {{ form.first_name.errors }}
+        <i class="fas fa-user"></i>
+        {{ form.first_name|add_class:"input-field"|attr:"placeholder:Nome" }}
+      </div>
+
+      <div class="input-group">
+        {{ form.last_name.errors }}
+        <i class="fas fa-user"></i>
+        {{ form.last_name|add_class:"input-field"|attr:"placeholder:Sobrenome" }}
+      </div>
+
+      <div class="input-group">
         {{ form.username.errors }}
         <i class="fas fa-user"></i>
         {{ form.username|add_class:"input-field"|attr:"placeholder:Nome de usuário" }}

@@ -3,29 +3,34 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User, Log, CustomPermission
 
 
-# Customização do Admin para o modelo User
+## Customização do Admin para o modelo User
 class UserAdmin(BaseUserAdmin):
-    list_display = ('id', 'username', 'email', 'is_active', 'is_staff', 'created_at', 'login_attempts', 'locked_until')
-    list_filter = ('is_active', 'is_staff', 'groups', 'last_login', 'created_at')
-    search_fields = ('username', 'email')
-    ordering = ('-created_at',)  # Ordenar por data de criação
+    list_display = (
+        'id', 'username', 'first_name', 'last_name', 'email',
+        'is_active', 'is_staff', 'created_at', 'login_attempts', 'locked_until'
+    )
+    list_filter = (
+        'is_active', 'is_staff', 'groups', 'last_login', 'created_at'
+    )
+    search_fields = ('username', 'email', 'first_name', 'last_name')
+    ordering = ('-created_at',)
     filter_horizontal = ('groups', 'user_permissions')
-    
-    # Campos para visualização detalhada de cada usuário
+
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
+        ('Informações Pessoais', {'fields': ('first_name', 'last_name')}),
         ('Informações de Acesso', {'fields': ('login_attempts', 'locked_until', 'last_login')}),
         ('Permissões', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Datas Importantes', {'fields': ('created_at',)}),
     )
-    
-    # Campos para a criação de novos usuários
+
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2'),
+            'fields': ('username', 'email', 'first_name', 'last_name', 'password1', 'password2'),
         }),
     )
+
 
 
 # Customização do Admin para o modelo Log

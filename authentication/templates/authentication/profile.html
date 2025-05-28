@@ -1,42 +1,66 @@
 {% extends 'base_generic.html' %}
-{% load widget_tweaks %}
+{% load widget_tweaks static %}
 
 {% block content %}
-  <div class="profile-container">
-    <h2>Meu Perfil</h2>
+<link rel="stylesheet" href="{% static 'authentication/css/profile.css' %}">
 
-    <!-- Exibição apenas informativa -->
-    <p><strong>Usuário:</strong> {{ user.username }}</p>
+<div class="container mt-5 profile-container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
 
-    <!-- Formulário de edição -->
-    <form method="post">
-      {% csrf_token %}
+      <div class="card shadow-lg rounded">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">Meu Perfil</h3>
+        </div>
+        <div class="card-body">
 
-      <div class="form-group">
-        <label>{{ form.first_name.label_tag }}</label>
-        {{ form.first_name|add_class:"form-control" }}
+          <!-- Exibição do nome de usuário -->
+          <div class="mb-3">
+            <p><strong>Usuário:</strong> {{ user.username }}</p>
+          </div>
+
+          <!-- Formulário de edição de dados -->
+          <form method="post" novalidate>
+            {% csrf_token %}
+            <fieldset>
+              <legend class="fs-5 mb-3">Informações Pessoais</legend>
+
+              <div class="mb-3">
+                <label for="id_first_name" class="form-label">Nome</label>
+                {{ form.first_name|add_class:"form-control" }}
+              </div>
+
+              <div class="mb-3">
+                <label for="id_last_name" class="form-label">Sobrenome</label>
+                {{ form.last_name|add_class:"form-control" }}
+              </div>
+
+              <div class="mb-3">
+                <label for="id_email" class="form-label">E-mail</label>
+                {{ form.email|add_class:"form-control" }}
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-success">Salvar Alterações</button>
+              </div>
+            </fieldset>
+          </form>
+
+          <!-- Exibição de mensagens -->
+          {% if messages %}
+          <div class="mt-4">
+            <ul class="list-group">
+              {% for message in messages %}
+              <li class="list-group-item list-group-item-info">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+        </div>
       </div>
 
-      <div class="form-group">
-        <label>{{ form.last_name.label_tag }}</label>
-        {{ form.last_name|add_class:"form-control" }}
-      </div>
-
-      <div class="form-group">
-        <label>{{ form.email.label_tag }}</label>
-        {{ form.email|add_class:"form-control" }}
-      </div>
-
-      <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-    </form>
-
-    <!-- Mensagens de sucesso ou erro -->
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+    </div>
   </div>
+</div>
 {% endblock %}
