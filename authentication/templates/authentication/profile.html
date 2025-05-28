@@ -2,6 +2,7 @@
 {% load widget_tweaks static %}
 
 {% block content %}
+<!-- Importa o CSS específico para o perfil -->
 <link rel="stylesheet" href="{% static 'authentication/css/profile.css' %}">
 
 <div class="container mt-5 profile-container">
@@ -19,7 +20,7 @@
             <p><strong>Usuário:</strong> {{ user.username }}</p>
           </div>
 
-          <!-- Formulário de edição de dados -->
+          <!-- Formulário para editar informações pessoais -->
           <form method="post" novalidate>
             {% csrf_token %}
             <fieldset>
@@ -46,7 +47,7 @@
             </fieldset>
           </form>
 
-          <!-- Exibição de mensagens -->
+          <!-- Exibição de mensagens de feedback -->
           {% if messages %}
           <div class="mt-4">
             <ul class="list-group">

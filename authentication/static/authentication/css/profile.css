@@ -1,0 +1,106 @@
+/* Container principal */
+.profile-container {
+  max-width: 700px;
+  background: #1e1e2f; /* fundo escuro, tom azul petróleo */
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  color: #eee; /* texto claro */
+}
+
+/* Cabeçalho do card */
+.card-header {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-align: center;
+  letter-spacing: 0.05em;
+  background-color: #005f99; /* azul forte */
+  color: #f0f0f0;
+  padding: 15px 0;
+  box-shadow: 0 4px 10px rgba(0, 95, 153, 0.7);
+}
+
+/* Labels dos inputs */
+.form-label {
+  font-weight: 600;
+  color: #cccccc;
+}
+
+/* Inputs do formulário */
+.form-control {
+  border: 1.5px solid #3a3a4d;
+  border-radius: 8px;
+  padding: 12px 16px;       /* um pouco mais de padding para conforto */
+  width: 100%;              /* usa toda a largura do container pai */
+  margin-bottom: 16px;      /* espaçamento mais confortável entre campos */
+  font-size: 1.1rem;        /* ligeiramente maior para melhor legibilidade */
+  background-color: #2b2b40; /* fundo escuro */
+  color: #eee;              /* texto claro */
+  box-sizing: border-box;   /* inclui padding e border na largura total */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
+  outline: none;
+}
+
+
+/* Foco nos inputs */
+.form-control:focus {
+  border-color: #0099ff;
+  box-shadow: 0 0 8px rgba(0, 153, 255, 0.7);
+  outline: none;
+  background-color: #3c4a6b;
+  color: #fff;
+}
+
+/* Botão salvar */
+.btn-success {
+  background-color: #0099ff;
+  border: none;
+  font-weight: 700;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #fff;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+}
+
+.btn-success:hover {
+  background-color: #007acc;
+  box-shadow: 0 0 12px #007accaa;
+}
+
+/* Lista de mensagens */
+.list-group-item-info {
+  background-color: #004c7f;
+  color: #b0d4ff;
+  border: none;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px #005f99aa;
+}
+
+/* Espaçamentos internos */
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+  .profile-container {
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .card-header {
+    font-size: 1.3rem;
+  }
+}
