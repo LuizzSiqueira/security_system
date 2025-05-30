@@ -1,0 +1,38 @@
+# Ignorar cache de compilação do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambientes virtuais
+venv/
+.env/
+.venv/
+
+# Arquivos de configuração locais
+*.env
+.env.*
+*.ini
+*.local
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de testes
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+*.pytest_cache/
+
+# Outras pastas ignoradas
+build/
+dist/
+*.egg-info/
