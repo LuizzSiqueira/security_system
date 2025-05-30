@@ -3,65 +3,71 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Cadastro</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="{% static 'authentication/css/register.css' %}" />
+    <meta charset="UTF-8" />
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'authentication/css/register.css' %}" />
 </head>
 <body>
-  <div class="background-shape one"></div>
-  <div class="background-shape two"></div>
+    <div class="background-shape one"></div>
+    <div class="background-shape two"></div>
 
-  <div class="register-container">
-    <h2>Cadastro</h2>
-    <p>Preencha seus dados para criar sua conta</p>
+    <div class="register-container">
+        <h2>Cadastro</h2>
+        <p>Preencha seus dados para criar sua conta</p>
 
-    <form method="post" novalidate>
-      {% csrf_token %}
-      {{ form.non_field_errors }}
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
 
-      <div class="input-group">
-        {{ form.first_name.errors }}
-        <i class="fas fa-user"></i>
-        {{ form.first_name|add_class:"input-field"|attr:"placeholder:Nome" }}
-      </div>
+            <div class="input-group">
+                {{ form.first_name.errors }}
+                <i class="fas fa-user"></i>
+                {{ form.first_name|add_class:"input-field"|attr:"placeholder:Nome" }}
+            </div>
 
-      <div class="input-group">
-        {{ form.last_name.errors }}
-        <i class="fas fa-user"></i>
-        {{ form.last_name|add_class:"input-field"|attr:"placeholder:Sobrenome" }}
-      </div>
+            <div class="input-group">
+                {{ form.last_name.errors }}
+                <i class="fas fa-user"></i>
+                {{ form.last_name|add_class:"input-field"|attr:"placeholder:Sobrenome" }}
+            </div>
 
-      <div class="input-group">
-        {{ form.username.errors }}
-        <i class="fas fa-user"></i>
-        {{ form.username|add_class:"input-field"|attr:"placeholder:Nome de usuário" }}
-      </div>
+            <div class="input-group">
+                {{ form.username.errors }}
+                <i class="fas fa-user"></i>
+                {{ form.username|add_class:"input-field"|attr:"placeholder:Nome de usuário" }}
+            </div>
 
-      <div class="input-group">
-        {{ form.email.errors }}
-        <i class="fas fa-envelope"></i>
-        {{ form.email|add_class:"input-field"|attr:"placeholder:E-mail" }}
-      </div>
+            <div class="input-group">
+                {{ form.email.errors }}
+                <i class="fas fa-envelope"></i>
+                {{ form.email|add_class:"input-field"|attr:"placeholder:E-mail" }}
+            </div>
 
-      <div class="input-group">
-        {{ form.password1.errors }}
-        <i class="fas fa-lock"></i>
-        {{ form.password1|add_class:"input-field"|attr:"placeholder:Senha" }}
-      </div>
+            <div class="input-group">
+                {{ form.password1.errors }}
+                <i class="fas fa-lock"></i>
+                {{ form.password1|add_class:"input-field"|attr:"placeholder:Senha" }}
+            </div>
 
-      <div class="input-group">
-        {{ form.password2.errors }}
-        <i class="fas fa-lock"></i>
-        {{ form.password2|add_class:"input-field"|attr:"placeholder:Confirmar senha" }}
-      </div>
+            <div class="input-group">
+                {{ form.password2.errors }}
+                <i class="fas fa-lock"></i>
+                {{ form.password2|add_class:"input-field"|attr:"placeholder:Confirmar senha" }}
+            </div>
 
-      <button type="submit">Cadastrar</button>
-    </form>
+            <div class="input-group checkbox-group">
+                {{ form.terms_accepted_at.errors }}
+                {{ form.terms_accepted_at }}
+                <label for="{{ form.terms_accepted_at.id_for_label }}">{{ form.terms_accepted_at.label|safe }}</label>
+            </div>
 
-    <div class="login-link">
-      Já tem uma conta? <a href="{% url 'login' %}">Faça login!</a>
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <div class="login-link">
+            Já tem uma conta? <a href="{% url 'login' %}">Faça login!</a>
+        </div>
     </div>
-  </div>
 </body>
 </html>

@@ -160,7 +160,6 @@ class CustomPasswordChangeView(PasswordChangeView):
 def terms_view(request):
     return render(request, 'authentication/terms.html')
 
-
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
