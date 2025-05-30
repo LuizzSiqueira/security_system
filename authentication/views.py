@@ -25,28 +25,7 @@ from rest_framework.views import APIView
 from .forms import CustomUserCreationForm
 from .models import Log
 from django.utils import timezone
-
-# Função para obter o IP do cliente da requisição
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
-
-
-# Função para registrar logs de atividade com o IP correto
-def register_log(user, status, request, action_type='OTHER', success=True):
-    ip_origem = get_client_ip(request)
-    Log.objects.create(
-        user=user,
-        status=status,
-        action_type=action_type,
-        success=success,
-        ip_origem=ip_origem,
-    )
-
+from .utils import register_log
 
 # Página inicial
 def home_view(request):
@@ -197,10 +176,12 @@ def profile_view(request):
         if form.is_valid():
             print('Form válido, salvando...')
             form.save()
+            register_log(user, 'Perfil atualizado com sucesso', request, action_type='UPDATE', success=True)
             messages.success(request, 'Perfil atualizado com sucesso!')
             return redirect('profile')
         else:
             print('Erros do form:', form.errors)
+            register_log(user, 'Falha ao atualizar perfil', request, action_type='UPDATE', success=False)
             messages.error(request, 'Erro ao atualizar perfil.')
     else:
         form = ProfileForm(instance=user)
