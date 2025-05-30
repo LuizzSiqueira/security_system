@@ -17,7 +17,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost', cast=lambda v: [s.s
 
 # Aplicações instaladas
 INSTALLED_APPS = [
-    'authentication',
+    'authentication.apps.AuthenticationConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -113,7 +113,7 @@ AUTH_USER_MODEL = 'authentication.User'  # Aqui 'authentication' é o nome da su
 # Arquivos estáticos (CSS, JS, imagens)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates', 'static'),  # Ex: /templates/static
+        os.path.join(BASE_DIR, 'authentication', 'static'),  # Agora aponta para a pasta correta
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

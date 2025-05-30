@@ -5,4 +5,4 @@ class AuthenticationConfig(AppConfig):
     name = 'authentication'
 
     def ready(self):
-        import authentication.signals         # Login e logout
+        import authentication.signals  # Carrega os sinais automaticamente

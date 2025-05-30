@@ -28,6 +28,8 @@ class UserManager(BaseUserManager):
 
 
 # Modelo de Usuário customizado
+from django.utils import timezone
+
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=150, unique=True)
@@ -37,6 +39,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     login_attempts = models.IntegerField(default=0)
     locked_until = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
+
+    consent_given = models.BooleanField(default=False)  # ✅ Consentimento obrigatório
+    terms_accepted_at = models.DateTimeField(null=True, blank=True)  # ✅ Aceite dos termos de uso
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

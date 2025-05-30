@@ -24,6 +24,7 @@ from rest_framework.views import APIView
 # App local - formulários e modelos
 from .forms import CustomUserCreationForm
 from .models import Log
+from django.utils import timezone
 
 # Função para obter o IP do cliente da requisição
 def get_client_ip(request):
@@ -80,11 +81,25 @@ def logout_view(request):
 
 
 # Registro de usuário
+
 def register_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)  # Não salva ainda
+
+            # Captura o consentimento (campo booleano do form)
+            consent = form.cleaned_data.get('consent_given', False)
+            user.consent_given = consent
+
+            # Registra o horário do aceite dos termos (se consentido)
+            if consent:
+                user.terms_accepted_at = timezone.now()
+            else:
+                user.terms_accepted_at = None
+
+            user.save()  # Salva o usuário com os campos ajustados
+
             register_log(user, 'Usuário registrado com sucesso', request, action_type='CREATE', success=True)
             messages.success(request, 'Conta criada com sucesso! Faça login.')
             return redirect('login')
@@ -94,6 +109,7 @@ def register_view(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'authentication/register.html', {'form': form})
+
 
 
 # Lista de usuários (consulta - READ)
