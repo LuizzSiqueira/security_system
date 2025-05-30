@@ -58,6 +58,15 @@
           </div>
           {% endif %}
 
+          <div class="delete-account-section text-center">
+            <h4 class="mb-3 text-danger">Deletar Conta</h4>
+            <p class="text-muted">Esta ação é irreversível e removerá permanentemente sua conta e todos os dados associados.</p>
+            <form action="{% url 'delete_account' %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="delete-button">Deletar Minha Conta</button>
+            </form>
+          </div>
+
         </div>
       </div>
 

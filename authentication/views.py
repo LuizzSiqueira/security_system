@@ -210,3 +210,14 @@ def profile_view(request):
         'form': form,
         'user': user,
     })
+
+def delete_account_view(request):
+    if request.method == 'POST':
+        user = request.user
+        logout(request) # Desloga o usuário ANTES de deletar a conta
+        user.delete()
+
+        messages.success(request, 'Sua conta foi deletada com sucesso. Sentiremos sua falta!')
+        return redirect('home') # Redireciona para a página inicial
+    else:
+        return redirect('profile')

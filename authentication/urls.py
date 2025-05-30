@@ -13,6 +13,7 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('profile/', views.profile_view, name='profile'),
     path('terms/', views.terms_view, name='terms'),
+    path('delete-account/', views.delete_account_view, name='delete_account'),
 
     # Recuperação de senha (password reset)
     path('password-reset/', auth_views.PasswordResetView.as_view(
