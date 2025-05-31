@@ -36,9 +36,9 @@ class UserAdmin(BaseUserAdmin):
 # Customização do Admin para o modelo Log
 @admin.register(Log)
 class LogAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'status', 'action_type', 'success', 'data_hora', 'ip_origem')  # Exibe mais informações sobre os logs
-    search_fields = ('user__username', 'status', 'action_type', 'ip_origem')  # Pesquisa por tipo de ação, status e IP
-    list_filter = ('data_hora', 'action_type', 'success', 'status', 'user')  # Filtros adicionais por status e usuário
+    list_display = ('id', 'user', 'status', 'action_type', 'success', 'data_hora', 'ip_origem')
+    search_fields = ('user__username', 'status', 'action_type', 'ip_origem')
+    list_filter = ('data_hora', 'action_type', 'success', 'status', 'user')
     ordering = ('-data_hora',)  # Ordenação descendente para exibir os logs mais recentes
 
     # Adicionando campos e opções de filtro no admin para facilitar a análise de logs

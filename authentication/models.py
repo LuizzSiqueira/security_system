@@ -40,8 +40,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     locked_until = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
-    consent_given = models.BooleanField(default=False)  # ✅ Consentimento obrigatório
-    terms_accepted_at = models.DateTimeField(null=True, blank=True)  # ✅ Aceite dos termos de uso
+    consent_given = models.BooleanField(default=False)
+    terms_accepted_at = models.DateTimeField(null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -71,24 +71,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}".strip()
+
     def reset_login_attempts(self):
-        """Reseta o contador de tentativas de login."""
         self.login_attempts = 0
         self.save()
 
     def increment_login_attempts(self):
-        """Incrementa o contador de tentativas de login."""
         self.login_attempts += 1
         self.save()
 
     def lock_account(self, minutes=30):
-        """Bloqueia a conta por um número específico de minutos."""
         self.locked_until = timezone.now() + timedelta(minutes=minutes)
         self.save()
 
     def is_locked(self):
-        """Verifica se a conta está bloqueada."""
         return self.locked_until and timezone.now() < self.locked_until
+
 
 
 # Modelo de Log para rastrear atividades dos usuários
