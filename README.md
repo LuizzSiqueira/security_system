@@ -32,3 +32,7 @@ Certifique-se de ter o Python 3.x e o PostgreSQL instalados em sua máquina. Cas
 1. Clone este repositório:
    ```bash
    git clone git@github.com:LuizzSiqueira/security_system.git
+
+2. Instale os requerimentos
+   ```bash
+   pip install -r requirements.txt   
