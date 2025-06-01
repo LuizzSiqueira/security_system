@@ -44,13 +44,17 @@
                 {{ form.email|add_class:"input-field"|attr:"placeholder:E-mail" }}
             </div>
 
-            <div class="input-group">
+            <!-- Campo senha com ícone de olho clicável -->
+            <div class="input-group password-group">
                 {{ form.password1.errors }}
                 <i class="fas fa-lock"></i>
                 {{ form.password1|add_class:"input-field"|attr:"placeholder:Senha" }}
+                <span class="toggle-wrapper">
+                    <i class="fas fa-eye toggle-password" title="Mostrar/ocultar senha"></i>
+                </span>
             </div>
 
-            <!-- 🔐 Regras de senha -->
+            <!-- Regras da senha -->
             <div class="password-rules">
                 <p><strong>A senha deve conter:</strong></p>
                 <ul>
@@ -62,10 +66,16 @@
                 </ul>
             </div>
 
-            <div class="input-group">
+            <!-- Força da senha -->
+            <div id="password-strength" class="password-strength"></div>
+
+            <div class="input-group password-group">
                 {{ form.password2.errors }}
                 <i class="fas fa-lock"></i>
                 {{ form.password2|add_class:"input-field"|attr:"placeholder:Confirmar senha" }}
+                <span class="toggle-wrapper">
+                    <i class="fas fa-eye toggle-password" title="Mostrar/ocultar senha"></i>
+                </span>
             </div>
 
             <div class="input-group checkbox-group">
@@ -81,5 +91,59 @@
             Já tem uma conta? <a href="{% url 'login' %}">Faça login!</a>
         </div>
     </div>
+
+    <script>
+        // Força da senha
+        const passwordInput = document.querySelector('input[name="password1"]');
+        const strengthText = document.getElementById('password-strength');
+
+        passwordInput.addEventListener('input', () => {
+            const val = passwordInput.value;
+            let strength = 'Fraca';
+
+            if (val.length >= 8) {
+                const hasUpper = /[A-Z]/.test(val);
+                const hasLower = /[a-z]/.test(val);
+                const hasNumber = /\d/.test(val);
+                const hasSpecial = /[!@#$%^&*]/.test(val);
+                const checks = [hasUpper, hasLower, hasNumber, hasSpecial].filter(Boolean).length;
+
+                if (checks >= 3) strength = 'Média';
+                if (checks === 4) strength = 'Forte';
+            }
+
+            strengthText.textContent = `Força da senha: ${strength}`;
+            strengthText.className = 'password-strength ' + strength.toLowerCase();
+        });
+
+        // Mostrar/ocultar senha ao clicar no olho
+        document.querySelectorAll('.toggle-password').forEach(icon => {
+            icon.addEventListener('click', () => {
+                const inputGroup = icon.closest('.input-group');
+                const input = inputGroup.querySelector('input');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+
+        // Validação do checkbox
+        const form = document.querySelector('form');
+        const consentCheckbox = form.querySelector('input[name="consent_given"]');
+        form.addEventListener('submit', e => {
+            if (!consentCheckbox.checked) {
+                e.preventDefault();
+                alert('Você precisa aceitar os termos para continuar.');
+                consentCheckbox.focus();
+            }
+        });
+    </script>
 </body>
 </html>

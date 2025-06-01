@@ -1,29 +1,95 @@
-
 /* terms.css */
 
+/* Fundo e layout geral */
+body {
+  background-color: #1F41A9;
+  font-family: 'PT Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: white;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Formas decorativas */
+.background-shape {
+  position: absolute;
+  background: #274FC7;
+  border-radius: 50%;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.background-shape.one {
+  width: 400px;
+  height: 400px;
+  left: -120px;
+  top: 500px;
+}
+
+.background-shape.two {
+  width: 500px;
+  height: 500px;
+  right: -150px;
+  top: 200px;
+}
+
+/* Container do conteúdo */
 .terms-container {
   background-color: rgba(30, 30, 60, 0.85);
   padding: 40px 30px;
   border-radius: 20px;
   max-width: 700px;
-  margin: 40px auto;
-  color: white;
-  font-family: 'PT Sans', sans-serif;
+  margin: 60px auto;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   line-height: 1.6;
+  position: relative;
+  z-index: 1;
 }
 
-.terms-container h1,
+/* Títulos */
+.terms-container h1 {
+  font-size: 30px;
+  color: #FFA500;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
 .terms-container h2 {
   color: #FFA500;
-  margin-bottom: 15px;
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 10px;
 }
 
+/* Parágrafos */
+.terms-container p {
+  font-size: 16px;
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+/* Links */
 .terms-container a {
   color: #FFD580;
   text-decoration: underline;
+  font-weight: 600;
 }
 
 .terms-container a:hover {
   color: #FFF;
+  text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .terms-container {
+    padding: 30px 20px;
+    margin: 40px 20px;
+  }
+
+  .background-shape.one,
+  .background-shape.two {
+    display: none;
+  }
 }

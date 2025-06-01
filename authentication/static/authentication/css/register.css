@@ -1,6 +1,6 @@
-/* register.css */
-
-/* Estrutura geral */
+/* ===========================
+   Estrutura Geral & Body
+=========================== */
 body {
   background-color: #1F41A9;
   font-family: 'PT Sans', sans-serif;
@@ -14,7 +14,9 @@ body {
   overflow: hidden;
 }
 
-/* Elementos decorativos */
+/* ===========================
+   Elementos Decorativos
+=========================== */
 .background-shape {
   position: absolute;
   background: #274FC7;
@@ -38,7 +40,9 @@ body {
   top: 300px;
 }
 
-/* Container principal */
+/* ===========================
+   Container Principal
+=========================== */
 .register-container {
   background-color: rgba(30, 30, 60, 0.85);
   padding: 40px 30px;
@@ -65,12 +69,15 @@ body {
   letter-spacing: 1px;
 }
 
-/* Grupos de inputs */
+/* ===========================
+   Grupos de Inputs
+=========================== */
 .input-group {
   position: relative;
   margin-bottom: 20px;
 }
 
+/* Ícones padrão (ex: cadeado, usuário) */
 .input-group i {
   position: absolute;
   top: 50%;
@@ -81,10 +88,9 @@ body {
   pointer-events: none;
 }
 
-/* Inputs texto, email, senha */
+/* Inputs texto, email */
 .input-group input[type="text"],
-.input-group input[type="email"],
-.input-group input[type="password"] {
+.input-group input[type="email"] {
   width: 90%;
   height: 45px;
   background: transparent;
@@ -94,14 +100,17 @@ body {
   font-size: 15px;
   font-weight: 700;
   padding-left: 45px;
+  
   transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
+/* Placeholder */
 .input-group input::placeholder {
   color: #ccccccaa;
   font-weight: 400;
 }
 
+/* Foco nos inputs */
 .input-group input:focus {
   border-color: #FFA500;
   background-color: rgba(255, 165, 0, 0.1);
@@ -109,7 +118,79 @@ body {
   color: white;
 }
 
-/* Botão de envio */
+/* ===========================
+   Input de Senha - Ajustes Especiais
+=========================== */
+
+
+.password-group {
+    position: relative;
+}
+
+.toggle-wrapper {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 2;
+    color: #555;
+}
+
+.password-group .input-field {
+    padding-right: 35px; /* espaço reservado para o ícone */
+}
+
+/* Container relativo */
+.input-group.password-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input-group.password-group i.fa-lock {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffffcc;
+  font-size: 18px;
+  pointer-events: none; /* esse sim deve ser ignorado */
+  z-index: 2;
+}
+
+.input-group.password-group .toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffffcc;
+  font-size: 18px;
+  cursor: pointer;
+  user-select: none;
+  z-index: 2;
+  pointer-events: auto; /* garante que seja clicável */
+}
+
+.input-group.password-group input[type="password"],
+.input-group.password-group input[type="text"] {
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  border: 1.5px solid white;
+  border-radius: 15px;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  padding-left: 45px;
+  padding-right: 45px;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* ===========================
+   Botão de Envio
+=========================== */
 button[type="submit"] {
   width: 100%;
   height: 45px;
@@ -133,7 +214,9 @@ button[type="submit"]:focus {
   outline: none;
 }
 
-/* Mensagens de erro ou aviso */
+/* ===========================
+   Mensagens de Erro/Aviso
+=========================== */
 .messages {
   color: #FF6B6B;
   text-align: center;
@@ -143,7 +226,9 @@ button[type="submit"]:focus {
   letter-spacing: 0.5px;
 }
 
-/* Responsividade */
+/* ===========================
+   Responsividade
+=========================== */
 @media (max-width: 450px) {
   .register-container {
     padding: 30px 20px;
@@ -161,8 +246,11 @@ button[type="submit"]:focus {
   }
 }
 
-/* Link para login */
-.login-link a {
+/* ===========================
+   Links (Login e Troca de Senha)
+=========================== */
+.login-link a,
+.troca-senha-link a {
   color: #ffffff;
   font-weight: 700;
   text-decoration: none;
@@ -170,7 +258,9 @@ button[type="submit"]:focus {
 }
 
 .login-link a:hover,
-.login-link a:focus {
+.login-link a:focus,
+.troca-senha-link a:hover,
+.troca-senha-link a:focus {
   color: #FFD580;
   text-decoration: underline;
   outline: none;
@@ -182,21 +272,9 @@ button[type="submit"]:focus {
   margin-bottom: 15px;
 }
 
-.troca-senha-link a {
-  color: #ffffff;
-  font-weight: 700;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.troca-senha-link a:hover,
-.troca-senha-link a:focus {
-  color: #FFD580;
-  text-decoration: underline;
-  outline: none;
-  cursor: pointer;
-}
-
+/* ===========================
+   Outros Inputs (ex: .input-field)
+=========================== */
 .input-field {
   width: 90%;
   height: 50px;
@@ -210,7 +288,9 @@ button[type="submit"]:focus {
   transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-/* Regras de senha */
+/* ===========================
+   Regras de Senha & Força
+=========================== */
 .password-rules {
   background-color: rgba(255, 255, 255, 0.05);
   padding: 15px 20px;
@@ -244,4 +324,26 @@ button[type="submit"]:focus {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Indicador de força da senha */
+.password-strength {
+  margin-top: 5px;
+  font-weight: 700;
+  font-size: 14px;
+  height: 18px;
+  color: #FFD580;
+  transition: color 0.3s ease;
+}
+
+.password-strength.weak {
+  color: #FF6B6B;
+}
+
+.password-strength.medium {
+  color: #FFA500;
+}
+
+.password-strength.strong {
+  color: #4CAF50;
 }
