@@ -81,6 +81,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 8}
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -88,7 +89,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'authentication.validators.ComplexPasswordValidator',  # 👈 Aqui está o novo validador
+    },
 ]
+
 
 # Usar variáveis de ambiente para as credenciais de e-mail
 FROM_EMAIL = os.getenv("FROM_EMAIL", "central.seguranca.app@gmail.com")
