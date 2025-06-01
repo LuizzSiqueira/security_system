@@ -7,6 +7,10 @@
   <title>Login</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="{% static 'authentication/css/register.css' %}" />
+  <style>
+    #mfa-section { display: none; margin-top: 1rem; }
+    .error-msg { color: red; font-size: 0.9em; }
+  </style>
 </head>
 <body>
   <div class="background-shape one"></div>
@@ -16,32 +20,90 @@
     <h2>Login</h2>
     <p>Insira seus dados para acessar sua conta</p>
 
-    <form method="post" novalidate>
+    <form id="login-form" method="post" novalidate>
       {% csrf_token %}
-      {{ form.non_field_errors }}
+      <div id="login-fields">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          {{ form.username|add_class:"input-field"|attr:"placeholder:Nome de usuário" }}
+        </div>
 
-      <div class="input-group">
-        {{ form.username.errors }}
-        <i class="fas fa-user"></i>
-        {{ form.username|add_class:"input-field"|attr:"placeholder:Nome de usuário" }}
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          {{ form.password|add_class:"input-field"|attr:"placeholder:Senha" }}
+        </div>
+
+        <div class="troca-senha-link">
+          <a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
+        </div>
+
+        <button type="submit">Entrar</button>
       </div>
 
-      <div class="input-group">
-        {{ form.password.errors }}
-        <i class="fas fa-lock"></i>
-        {{ form.password|add_class:"input-field"|attr:"placeholder:Senha" }}
+      <div id="mfa-section">
+        <label for="mfa-code">Digite o código enviado por e-mail:</label>
+        <input type="text" id="mfa-code" name="code" class="input-field" placeholder="Código de verificação" required />
+        <button type="button" id="verify-mfa-btn">Verificar código</button>
       </div>
-      <div class="troca-senha-link" >
-        <a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
-      </div>
-
-      <button type="submit">Entrar</button>
     </form>
+
+    <p id="error-output" class="error-msg"></p>
 
     <div class="login-link">
       Ainda não tem uma conta? <a href="{% url 'register' %}">Cadastre-se!</a>
     </div>
-
   </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+
+      const response = await fetch("", {
+        method: "POST",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+        },
+        body: formData
+      });
+
+      const errorOutput = document.getElementById("error-output");
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.mfa_required) {
+          document.getElementById('login-fields').style.display = 'none';
+          document.getElementById('mfa-section').style.display = 'block';
+          errorOutput.textContent = "Código enviado! Verifique seu e-mail.";
+        }
+      } else {
+        const errorData = await response.json();
+        errorOutput.textContent = "Usuário ou senha inválidos.";
+      }
+    });
+
+    document.getElementById('verify-mfa-btn').addEventListener('click', async function () {
+      const code = document.getElementById('mfa-code').value;
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+      const response = await fetch("{% url 'verify_mfa' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-CSRFToken": csrfToken,
+        },
+        body: new URLSearchParams({ code: code }),
+      });
+
+      if (response.redirected) {
+        window.location.href = response.url;
+      } else {
+        document.getElementById("error-output").textContent = "Código inválido.";
+      }
+    });
+  </script>
 </body>
 </html>

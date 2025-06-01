@@ -1,5 +1,6 @@
 # Python padrão / built-in
 from functools import cache
+import random
 
 # Django - atalhos, mensagens, utilitários
 from django import forms
@@ -48,8 +49,10 @@ def home_view(request):
 # Registra sucesso e falha no log
 # --------------------------------------
 
+from django.http import JsonResponse
+
 def login_view(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         form = AuthenticationForm(data=request.POST)
         username = request.POST.get('username')
         ip = get_client_ip(request)
@@ -58,40 +61,28 @@ def login_view(request):
 
         if form.is_valid():
             user = form.get_user()
-            login(request, user)
-            register_log(user, 'Login realizado com sucesso', request, action_type='LOGIN', success=True)
-            messages.success(request, 'Login realizado com sucesso!')
-            cache.delete(cache_key)
-            return redirect('home')
+            code = str(random.randint(100000, 999999))
+
+            request.session['pre_auth_user_id'] = user.id
+            request.session['mfa_code'] = code
+
+            send_mail(
+                subject='Seu código de verificação',
+                message=f'Seu código de verificação é: {code}',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+
+            return JsonResponse({'success': True, 'mfa_required': True})
         else:
             attempts += 1
             cache.set(cache_key, attempts, timeout=3600)
+            return JsonResponse({'success': False, 'errors': form.errors.as_json()}, status=400)
 
-            if attempts >= 3:
-                try:
-                    user = User.objects.get(username=username)  # usa User do get_user_model()
-                    send_mail(
-                        subject='Alerta de segurança: Tentativas de login falhas',
-                        message=(
-                            f'Olá {user.get_full_name() or user.username},\n\n'
-                            'Detectamos 3 ou mais tentativas falhas de login na sua conta.\n'
-                            'Se não foi você, recomendamos alterar sua senha o quanto antes.\n\n'
-                            'Atenciosamente,\nSecurity System'
-                        ),
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        recipient_list=[user.email],
-                        fail_silently=True,
-                    )
-                except User.DoesNotExist:
-                    pass
-
-            register_log(None, f'Falha ao tentar realizar login para {username}', request, action_type='LOGIN', success=False)
-            messages.error(request, 'Usuário ou senha inválidos.')
-
-    else:
-        form = AuthenticationForm()
+    # fallback para requisições normais
+    form = AuthenticationForm()
     return render(request, 'authentication/login.html', {'form': form})
-
 
 
 # --------------------------------------
@@ -282,3 +273,28 @@ def delete_account_view(request):
     else:
         return redirect('profile')
 
+
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import get_user_model
+
+def verify_mfa_view(request):
+    if request.method == 'POST':
+        code_input = request.POST.get('code')
+        session_code = request.session.get('mfa_code')
+        user_id = request.session.get('pre_auth_user_id')
+
+        if code_input == session_code and user_id:
+            user = User.objects.get(id=user_id)
+            auth_login(request, user)
+            register_log(user, 'Login com MFA bem-sucedido', request, action_type='LOGIN', success=True)
+
+            # Limpeza da sessão
+            request.session.pop('mfa_code', None)
+            request.session.pop('pre_auth_user_id', None)
+
+            messages.success(request, 'Login realizado com sucesso.')
+            return redirect('home')
+        else:
+            messages.error(request, 'Código inválido ou expirado.')
+
+    return render(request, 'authentication/verify_mfa.html')

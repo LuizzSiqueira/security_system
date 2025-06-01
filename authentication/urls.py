@@ -1,12 +1,15 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-from .views import JWTProtectedView  # Importa a view protegida
-
-# ✅ Importa as views personalizadas de recuperação de senha
-from .views import CustomPasswordResetView, CustomPasswordResetConfirmView
+from .views import (
+    JWTProtectedView,
+    CustomPasswordResetView,
+    CustomPasswordResetConfirmView,
+    verify_mfa_view  # ✅ View de verificação do código MFA
+)
 
 urlpatterns = [
+    # 🌐 Páginas principais
     path('home/', views.home_view, name='home'), 
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
@@ -15,7 +18,10 @@ urlpatterns = [
     path('terms/', views.terms_view, name='terms'),
     path('delete-account/', views.delete_account_view, name='delete_account'),
 
-    # Recuperação de senha (password reset)
+    # 🔐 Verificação MFA (após login)
+    path('verify-mfa/', verify_mfa_view, name='verify_mfa'),
+
+    # 🔑 Recuperação de senha (default)
     path('password-reset/', auth_views.PasswordResetView.as_view(
         template_name='authentication/recovery_password.html',
         email_template_name='authentication/password_reset_email.html',
@@ -37,7 +43,7 @@ urlpatterns = [
     # 🔐 Rota protegida por JWT
     path('api/protected/', JWTProtectedView.as_view(), name='jwt_protected'),
 
-    # ✅ Rotas adicionais com logging de redefinição de senha
+    # 🔐 Recuperação de senha com logging
     path('log-password-reset/', CustomPasswordResetView.as_view(), name='log_password_reset'),
     path('log-password-confirm/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='log_password_reset_confirm'),
 ]
